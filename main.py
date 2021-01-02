@@ -1,8 +1,13 @@
 # Matric Calculator
+# Step 1: Make a working application ✔
+# Step 2: Modularise, maybe seperate files too
+# Step 3: Check for clean inputs
+# Step 4: Testing Framework?
 
 import PyQt5.QtWidgets as qtw
 import numpy as np
 import copy
+import matrix_input as mi
 
 class MainWindow(qtw.QWidget):
     """ Calculator """
@@ -27,7 +32,7 @@ class MainWindow(qtw.QWidget):
         btn_determinant = qtw.QPushButton("Determinant", clicked=self.determinant)
         btn_addition = qtw.QPushButton("Addition", clicked=self.addition)
         btn_multiplication = qtw.QPushButton("Multiplication", clicked=self.multiplication)
-        btn_transpose = qtw.QPushButton("Transpose", clicked=self.determinant)
+        btn_transpose = qtw.QPushButton("Transpose", clicked=self.transpose)
 
         # Adding Buttons to Grid
         container.layout().addWidget(btn_determinant,0,0,2,2)
@@ -38,11 +43,12 @@ class MainWindow(qtw.QWidget):
 
     
     def determinant(self):
-        items = ("1x1","2x2","3x3","4x4","5x5","6x6","7x7","8x8","9x9")
-        item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimensions","Matrix Dimensions", items, 0, False)
-        if okPressed and item:
-            # n x n dimensions
-            n = int(item[0])
+        n = mi.get_square_dimensions(self)
+        # items = ("1x1","2x2","3x3","4x4","5x5","6x6","7x7","8x8","9x9")
+        # item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimensions","Matrix Dimensions", items, 0, False)
+        # if okPressed and item:
+        #     # n x n dimensions
+        #     n = int(item[0])
         ans = self.input(n)
         self.dimensions = []
         self.matrix1_values = []
@@ -165,7 +171,6 @@ class MainWindow(qtw.QWidget):
             # n x n dimensions
             n = int(item[0])
 
-        items2 = ("1","2","3","4","5","6","7","8","9")
         item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
         if okPressed2 and item2:
             # n x n dimensions
@@ -223,6 +228,43 @@ class MainWindow(qtw.QWidget):
         answer_box.setIcon(qtw.QMessageBox.Information)
         answer_box.setText(str(answer))
         answer_box.setWindowTitle("Multiplication")
+        answer_box.setStandardButtons(qtw.QMessageBox.Ok)
+
+        return answer_box.exec()
+
+
+    def transpose(self):
+        items = ("1","2","3","4","5","6","7","8","9")
+        item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
+        if okPressed and item:
+            n = int(item[0])
+
+        items2 = ("1","2","3","4","5","6","7","8","9")
+        item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
+        if okPressed2 and item2:
+            n2 = int(item2[0])
+
+        text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
+        if okPressed and text != '':
+            temp = text.split(",")
+            for value in temp:
+                self.matrix1_values.append(int(value))
+        if n * n2 == len(self.matrix1_values):
+            matrix = np.zeros((n, n))
+            count = 0
+            for i in range(n):
+                for j in range(n):
+                    matrix[j][i] = self.matrix1_values[count]
+                    count += 1
+            print(matrix)
+            list_matrix = np.array(matrix).tolist()
+            ans = self.det(list_matrix, n)
+            print(ans)
+
+        answer_box = qtw.QMessageBox()
+        answer_box.setIcon(qtw.QMessageBox.Information)
+        answer_box.setText(str(list_matrix))
+        answer_box.setWindowTitle("Transpose")
         answer_box.setStandardButtons(qtw.QMessageBox.Ok)
 
         return answer_box.exec()
