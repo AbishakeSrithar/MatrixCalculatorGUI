@@ -9,7 +9,7 @@ def get_dimensions(qwidget):
         temp = text.split(",")
         return int(temp[0]), int(temp[1])
 
-def addition(qwidget):
+def multiplication(qwidget):
     n1, n2 = get_dimensions(qwidget)
 
     text, okPressed = qtw.QInputDialog.getText(qwidget, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
@@ -44,9 +44,12 @@ def addition(qwidget):
         count = 0
         for i in range(n1):
             for j in range(n2):
-                list_matrix2[i][j] = matrix1_values[count] + list_matrix[i][j]
+                list_matrix2[i][j] = matrix1_values[count]
                 count += 1
+        matrix1_values = []
     else:
         return False
 
-    return list_matrix2
+    answer = np.matmul(list_matrix, list_matrix2).tolist()
+
+    return answer

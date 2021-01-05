@@ -2,13 +2,15 @@
 # Step 1: Make a working application ✔
 # Step 2: Modularise, maybe seperate files too
 # Step 3: Check for clean inputs
-# Step 4: Testing Framework?
+# Step 4: Testing Framework/ Error catching
 
 import PyQt5.QtWidgets as qtw
 import numpy as np
 import copy
 import determinant as det
 import addition as add
+import multiplication as mult
+import transpose as tran
 
 class MainWindow(qtw.QWidget):
     """ Calculator """
@@ -165,64 +167,68 @@ class MainWindow(qtw.QWidget):
         return answer_box.exec()
 
     def multiplication(self):
-        items = ("1","2","3","4","5","6","7","8","9")
-        item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
-        if okPressed and item:
-            # n x n dimensions
-            n = int(item[0])
 
-        item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
-        if okPressed2 and item2:
-            # n x n dimensions
-            n2 = int(item2[0])
+        answer = mult.multiplication(self)
 
-        text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
-        if okPressed and text != '':
-            temp = text.split(",")
-            for value in temp:
-                self.matrix1_values.append(int(value))
-        if n * n2 == len(self.matrix1_values):
-            matrix = np.zeros((n, n2))
-            list_matrix = np.array(matrix).tolist()
-            count = 0
-            for i in range(n):
-                for j in range(n):
-                    list_matrix[i][j] = self.matrix1_values[count]
-                    count += 1
-            self.matrix1_values = []
-        else:
-            return 
+    #     items = ("1","2","3","4","5","6","7","8","9")
+    #     item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
+    #     if okPressed and item:
+    #         # n x n dimensions
+    #         n = int(item[0])
 
-        items = ("1","2","3","4","5","6","7","8","9")
-        item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
-        if okPressed and item:
-            # n x n dimensions
-            n = int(item[0])
+    #     item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
+    #     if okPressed2 and item2:
+    #         # n x n dimensions
+    #         n2 = int(item2[0])
 
-        items2 = ("1","2","3","4","5","6","7","8","9")
-        item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
-        if okPressed2 and item2:
-            # n x n dimensions
-            n2 = int(item2[0])
+    #     text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
+    #     if okPressed and text != '':
+    #         temp = text.split(",")
+    #         for value in temp:
+    #             self.matrix1_values.append(int(value))
+    #     if n * n2 == len(self.matrix1_values):
+    #         matrix = np.zeros((n, n2))
+    #         list_matrix = np.array(matrix).tolist()
+    #         count = 0
+    #         for i in range(n):
+    #             for j in range(n):
+    #                 list_matrix[i][j] = self.matrix1_values[count]
+    #                 count += 1
+    #         self.matrix1_values = []
+    #     else:
+    #         return 
 
-        text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
-        if okPressed and text != '':
-            temp = text.split(",")
-            for value in temp:
-                self.matrix1_values.append(int(value))
-        if n * n2 == len(self.matrix1_values):
-            matrix = np.zeros((n, n2))
-            list_matrix2 = np.array(matrix).tolist()
-            count = 0
-            for i in range(n):
-                for j in range(n):
-                    list_matrix2[i][j] = self.matrix1_values[count]
-                    count += 1
-            self.matrix1_values = []
-        else:
-            return 
+    #     items = ("1","2","3","4","5","6","7","8","9")
+    #     item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
+    #     if okPressed and item:
+    #         # n x n dimensions
+    #         n = int(item[0])
 
-        answer = np.matmul(list_matrix, list_matrix2).tolist()
+    #     items2 = ("1","2","3","4","5","6","7","8","9")
+    #     item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
+    #     if okPressed2 and item2:
+    #         # n x n dimensions
+    #         n2 = int(item2[0])
+
+    #     text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
+    #     if okPressed and text != '':
+    #         temp = text.split(",")
+    #         for value in temp:
+    #             self.matrix1_values.append(int(value))
+    #     if n * n2 == len(self.matrix1_values):
+    #         matrix = np.zeros((n, n2))
+    #         list_matrix2 = np.array(matrix).tolist()
+    #         count = 0
+    #         for i in range(n):
+    #             for j in range(n):
+    #                 list_matrix2[i][j] = self.matrix1_values[count]
+    #                 count += 1
+    #         self.matrix1_values = []
+    #     else:
+    #         return 
+
+    #     answer = np.matmul(list_matrix, list_matrix2).tolist()
+
 
         answer_box = qtw.QMessageBox()
         answer_box.setIcon(qtw.QMessageBox.Information)
@@ -234,32 +240,33 @@ class MainWindow(qtw.QWidget):
 
 
     def transpose(self):
-        items = ("1","2","3","4","5","6","7","8","9")
-        item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
-        if okPressed and item:
-            n = int(item[0])
+        list_matrix = tran.transpose(self)
+        # items = ("1","2","3","4","5","6","7","8","9")
+        # item, okPressed = qtw.QInputDialog.getItem(self, "Matrix Dimension 1","Matrix Dimension 1", items, 0, False)
+        # if okPressed and item:
+        #     n = int(item[0])
 
-        items2 = ("1","2","3","4","5","6","7","8","9")
-        item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
-        if okPressed2 and item2:
-            n2 = int(item2[0])
+        # items2 = ("1","2","3","4","5","6","7","8","9")
+        # item2, okPressed2 = qtw.QInputDialog.getItem(self, "Matrix Dimension 2","Matrix Dimension 2", items, 0, False)
+        # if okPressed2 and item2:
+        #     n2 = int(item2[0])
 
-        text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
-        if okPressed and text != '':
-            temp = text.split(",")
-            for value in temp:
-                self.matrix1_values.append(int(value))
-        if n * n2 == len(self.matrix1_values):
-            matrix = np.zeros((n, n))
-            count = 0
-            for i in range(n):
-                for j in range(n):
-                    matrix[j][i] = self.matrix1_values[count]
-                    count += 1
-            print(matrix)
-            list_matrix = np.array(matrix).tolist()
-            ans = self.det(list_matrix, n)
-            print(ans)
+        # text, okPressed = qtw.QInputDialog.getText(self, "Get CSV","Input (seperate values by ',')", qtw.QLineEdit.Normal, "")
+        # if okPressed and text != '':
+        #     temp = text.split(",")
+        #     for value in temp:
+        #         self.matrix1_values.append(int(value))
+        # if n * n2 == len(self.matrix1_values):
+        #     matrix = np.zeros((n, n))
+        #     count = 0
+        #     for i in range(n):
+        #         for j in range(n):
+        #             matrix[j][i] = self.matrix1_values[count]
+        #             count += 1
+        #     print(matrix)
+        #     list_matrix = np.array(matrix).tolist()
+        #     ans = self.det(list_matrix, n)
+        #     print(ans)
 
         answer_box = qtw.QMessageBox()
         answer_box.setIcon(qtw.QMessageBox.Information)
