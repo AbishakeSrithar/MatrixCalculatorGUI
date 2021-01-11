@@ -16,7 +16,8 @@ def addition(qwidget):
                 count += 1
         matrix1_values = []
     else:
-        return False
+        return "Error"
+
     n1, n2, matrix1_values = gi.get_matrix(qwidget)
     if matrix1_values:
         matrix = np.zeros((n1, n2))
@@ -27,6 +28,6 @@ def addition(qwidget):
                 list_matrix2[i][j] = matrix1_values[count] + list_matrix[i][j]
                 count += 1
     else:
-        return False
+        return "Error"
 
     return list_matrix2

@@ -13,8 +13,7 @@ def transpose(qwidget):
             for j in range(n2):
                 matrix[j][i] = matrix1_values[count]
                 count += 1
-        print(matrix)
         list_matrix = np.array(matrix).tolist()
         return list_matrix
     else:
-        return False
+        return "Error"

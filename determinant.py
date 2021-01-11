@@ -16,4 +16,6 @@ def get_det(qwidget):
         list_matrix = np.array(matrix).tolist()
         ans = np.linalg.det(list_matrix)
         return round(ans, 5)
+    else:
+        return "Error"
 

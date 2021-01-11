@@ -1,8 +1,8 @@
-# Matric Calculator
+# Matrix Calculator
 # Step 1: Make a working application ✔
-# Step 2: Modularise, maybe seperate files too
-# Step 3: Check for clean inputs
-# Step 4: Testing Framework/ Error catching
+# Step 2: Modularise, maybe seperate files too ✔
+# Step 3: Check for clean inputs ✔
+# Step 4: Error catching ✔
 
 import PyQt5.QtWidgets as qtw
 import numpy as np
@@ -11,6 +11,7 @@ import determinant as det
 import addition as add
 import multiplication as mult
 import transpose as tran
+import display_text as dtext
 
 class MainWindow(qtw.QWidget):
     """ Calculator """
@@ -21,8 +22,6 @@ class MainWindow(qtw.QWidget):
         # Window with Box Layout
         self.setLayout(qtw.QVBoxLayout())
         self.interface()
-        self.dimensions = []
-        self.matrix1_values = []
         self.show()
 
 
@@ -47,53 +46,25 @@ class MainWindow(qtw.QWidget):
     
     def determinant(self):
         ans = det.get_det(self)
-        answer_box = qtw.QMessageBox()
-        answer_box.setIcon(qtw.QMessageBox.Information)
-        answer_box.setText(str(ans))
-        answer_box.setGeometry(300, 100, 300, 100)
-        answer_box.setWindowTitle("Determinant")
-        answer_box.setStandardButtons(qtw.QMessageBox.Ok)
-
-        return answer_box.exec()
+        dtext.display_text(self, ans, "Determinant")
 
     
     def addition(self):
         ans = add.addition(self)
-        
-        answer_box = qtw.QMessageBox()
-        answer_box.setIcon(qtw.QMessageBox.Information)
-        answer_box.setText(str(ans))
-        answer_box.setWindowTitle("Determinant")
-        answer_box.setStandardButtons(qtw.QMessageBox.Ok)
-
-        return answer_box.exec()
+        dtext.display_text(self, ans, "Addition")
 
 
     def multiplication(self):
-
         ans = mult.multiplication(self)
-        answer_box = qtw.QMessageBox()
-        answer_box.setIcon(qtw.QMessageBox.Information)
-        answer_box.setText(str(ans))
-        answer_box.setWindowTitle("Multiplication")
-        answer_box.setStandardButtons(qtw.QMessageBox.Ok)
-
-        return answer_box.exec()
+        dtext.display_text(self, ans, "Multiplication")
 
 
     def transpose(self):
         ans = tran.transpose(self)
-        answer_box = qtw.QMessageBox()
-        answer_box.setIcon(qtw.QMessageBox.Information)
-        answer_box.setText(str(ans))
-        answer_box.setWindowTitle("Transpose")
-        answer_box.setStandardButtons(qtw.QMessageBox.Ok)
+        dtext.display_text(self, ans, "Transpose")
 
-        return answer_box.exec()
-
-
-app = qtw.QApplication([])
-mw = MainWindow()
-app.setStyle(qtw.QStyleFactory.create("Fusion"))
 while True:
+    app = qtw.QApplication([])
+    mw = MainWindow()
+    app.setStyle(qtw.QStyleFactory.create("Fusion"))
     app.exec_()

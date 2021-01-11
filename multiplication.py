@@ -16,7 +16,7 @@ def multiplication(qwidget):
                 count += 1
         matrix1_values = []
     else:
-        return False
+        return "Error"
 
     n1, n2, matrix1_values = gi.get_matrix(qwidget)
     if matrix1_values:
@@ -29,7 +29,7 @@ def multiplication(qwidget):
                 count += 1
         matrix1_values = []
     else:
-        return False
+        return "Error"
 
     answer = np.matmul(list_matrix, list_matrix2).tolist()
 
